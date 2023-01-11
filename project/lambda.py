@@ -16,8 +16,8 @@ def lambda_handler(event, context):
     """A function to serialize target data from S3"""
 
     # Get the s3 address from the Step Function event input
-    key = event['key']
-    bucket = event['bucket']
+    key = event['s3_key']
+    bucket = event['s3_bucket']
 
     # Download the data from s3 to /tmp/image.png
     s3 = boto3.client('s3')
@@ -90,7 +90,9 @@ def lambda_handler(event, context):
     inferences = event['inferences']
 
     # Check if any values in our inferences are above THRESHOLD
-    meets_threshold = inferences[0] > THRESHOLD or inferences[1] > THRESHOLD
+    bicycle_score = float(inferences[0])
+    motorcycle_score = float(inferences[1])
+    meets_threshold = bicycle_score > THRESHOLD or motorcycle_score > THRESHOLD
     
     # If our threshold is met, pass our data back out of the
     # Step Function, else, end the Step Function with an error
