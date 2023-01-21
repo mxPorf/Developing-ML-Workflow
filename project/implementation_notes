@@ -1,0 +1,18 @@
+En la consola de AWS, en el menu de SageMaker puedes revisar los modelos guardados asi como construir endpoints con los modelos entrenados
+
+Tuve problemas al cargar un modelo ya entrenado desde el cuaderno en SageMaker, no pude cargar el modelo ya entrenado y usarlo para continuar con el ejercicio.
+Antes, los modelos se serializaban con pickle, pero ahora tienen un metodo especifico para poder guardar y cargar el modelo. El metodo <model>.load()
+no sirvio para cargar el modelo y seguir usandolo, no se porque
+
+Al subir un paquete (la libreria de sagemaker para python) de dependencias en Lambda hubo problemas:
+el zip es demasiado grande y excede el limite de 50 MB para subirlo a la funcion
+Solucion: quitar los archivos _test y __pycache__ que existen en el folder de la libreria. [Aqui](https://github.com/aws/sagemaker-python-sdk/issues/1200)
+se describe el problema y como solucionarlo. (Usar instruccion de bash: find <archivos> exec rm <archivos>)
+Adicionalmente, la version de numpy que tiene la libreria causa problemas de compatibilidad con el runtime de Lambda, por lo que hay que 
+1. Bajar la version correcta desde el repo de [PyPi](https://pypi.org/project/numpy/#files)
+2. Quitar todos los archivos de numpy que existen en el folder de la libreria y
+3. Descomprimir la version correcta que se bajo a mano. (la version corrcta es la que coincide con la arquitectura de lambda <e.g. x86> y la version de python
+<e.g. 3.9> que se usa en el runtime de Lambda)
+
+Finalmente, para que Lambda acepte el archivo zip, este debe contener un archivo llamado **lambda_handler.py** con el codigo que se ejecutara en la funcion
+Lambda
