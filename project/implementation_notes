@@ -20,7 +20,8 @@ Lambda
 
 ###################
 Se pueden usar Lambda Layers para separar el codigo de las dependencias. Desde la consola grafica de AWS, en el home se ven las capas.
-Puedes poner capas de dependencias separadas, y continar editando el codigo desde el editor grafico
+Puedes poner capas de dependencias separadas, y continar editando el codigo desde el editor grafico. 
+Todoo el codigo de dependencias debe estar dentro de un folder llamado python, el nombre del zip puede ser el que sea
 
 **El limite de 50MB no aplica para librerias cargadas desde s3**
 ###################
